@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 内容系统评估报告 — Zero Markets 2025</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #fafaf8;
+  --bg2: #f3f2ef;
+  --bg3: #eae9e4;
+  --surface: #ffffff;
+  --border: rgba(0,0,0,0.1);
+  --border2: rgba(0,0,0,0.18);
+  --text: #1a1a18;
+  --text2: #5a5a56;
+  --text3: #8a8a84;
+  --blue: #185FA5;
+  --blue-bg: #E6F1FB;
+  --blue-text: #0C447C;
+  --green: #0F6E56;
+  --green-bg: #E1F5EE;
+  --green-text: #085041;
+  --amber: #854F0B;
+  --amber-bg: #FAEEDA;
+  --amber-text: #633806;
+  --red: #A32D2D;
+  --red-bg: #FCEBEB;
+  --red-text: #791F1F;
+  --radius: 10px;
+  --radius-sm: 6px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a18;
+    --bg2: #222220;
+    --bg3: #2a2a28;
+    --surface: #252523;
+    --border: rgba(255,255,255,0.1);
+    --border2: rgba(255,255,255,0.18);
+    --text: #e8e8e4;
+    --text2: #a8a8a4;
+    --text3: #686864;
+    --blue: #85B7EB;
+    --blue-bg: #0C447C;
+    --blue-text: #B5D4F4;
+    --green: #5DCAA5;
+    --green-bg: #085041;
+    --green-text: #9FE1CB;
+    --amber: #EF9F27;
+    --amber-bg: #633806;
+    --amber-text: #FAC775;
+    --red: #F09595;
+    --red-bg: #791F1F;
+    --red-text: #F7C1C1;
+  }
+}
+
+body {
+  font-family: 'Georgia', 'Noto Serif SC', serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 48px 32px 80px;
+}
+
+/* Header */
+.report-header {
+  margin-bottom: 48px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--border);
+}
+
+.report-meta {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 16px;
+}
+
+.report-title {
+  font-size: 34px;
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.2;
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+.report-subtitle {
+  font-size: 16px;
+  color: var(--text2);
+  font-style: italic;
+}
+
+.report-verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 8px 16px;
+  background: var(--green-bg);
+  color: var(--green-text);
+  border-radius: 20px;
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Nav */
+.nav {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+  padding: 6px;
+  background: var(--bg2);
+  border-radius: var(--radius);
+}
+
+.nav button {
+  font-family: 'Helvetica Neue', sans-serif;
+  padding: 7px 14px;
+  font-size: 12px;
+  border: none;
+  background: transparent;
+  color: var(--text2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+}
+
+.nav button.active {
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.nav button:hover:not(.active) { color: var(--text); }
+
+/* Sections */
+.section { display: none; }
+.section.active { display: block; }
+
+/* Typography */
+h2 {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 0.5px solid var(--border);
+}
+
+h3 {
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+
+p {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+/* Grid */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+
+@media (max-width: 600px) {
+  .grid2, .grid3, .grid4 { grid-template-columns: 1fr; }
+  .report-title { font-size: 26px; }
+}
+
+/* Cards */
+.card {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+}
+
+.card-accent { border-color: var(--blue); border-width: 1.5px; }
+
+/* Badges */
+.badge {
+  display: inline-block;
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 10px;
+  letter-spacing: .04em;
+}
+
+.badge-green { background: var(--green-bg); color: var(--green-text); }
+.badge-amber { background: var(--amber-bg); color: var(--amber-text); }
+.badge-red { background: var(--red-bg); color: var(--red-text); }
+.badge-blue { background: var(--blue-bg); color: var(--blue-text); }
+.badge-gray { background: var(--bg3); color: var(--text2); }
+
+/* Data rows */
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 0.5px solid var(--border);
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+.row:last-child { border-bottom: none; }
+.row-label { font-size: 11px; color: var(--text3); width: 130px; flex-shrink: 0; padding-top: 2px; }
+.row-val { font-size: 13px; color: var(--text); flex: 1; }
+
+/* Metrics */
+.metric {
+  background: var(--bg2);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+}
+
+.metric-label {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 11px;
+  color: var(--text3);
+  margin-bottom: 6px;
+}
+
+.metric-value {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.metric-value.green { color: var(--green); }
+.metric-value.amber { color: var(--amber); }
+.metric-value.red { color: var(--red); }
+
+/* Verdict boxes */
+.verdict {
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-top: 20px;
+  border: 0.5px solid;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+.verdict.green { background: var(--green-bg); border-color: var(--green); }
+.verdict.amber { background: var(--amber-bg); border-color: var(--amber); }
+.verdict.red { background: var(--red-bg); border-color: var(--red); }
+.verdict-title { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+.verdict.green .verdict-title, .verdict.green .verdict-desc { color: var(--green-text); }
+.verdict.amber .verdict-title, .verdict.amber .verdict-desc { color: var(--amber-text); }
+.verdict.red .verdict-title, .verdict.red .verdict-desc { color: var(--red-text); }
+.verdict-desc { font-size: 12px; line-height: 1.5; }
+
+/* Phase timeline */
+.phase {
+  border-left: 2px solid var(--border2);
+  padding-left: 18px;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.phase-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  position: absolute; left: -6px; top: 4px;
+}
+
+.phase-dot-1 { background: var(--blue); }
+.phase-dot-2 { background: var(--green); }
+.phase-dot-3 { background: var(--amber); }
+
+/* Week bars */
+.week-row { display: flex; gap: 8px; margin-bottom: 6px; align-items: center; }
+.week-label { font-family: 'Helvetica Neue', sans-serif; font-size: 11px; color: var(--text3); width: 60px; flex-shrink: 0; }
+.week-bar { height: 26px; border-radius: 5px; display: flex; align-items: center; padding-left: 10px; font-family: 'Helvetica Neue', sans-serif; font-size: 11px; font-weight: 500; white-space: nowrap; overflow: hidden; }
+.wb-blue { background: var(--blue-bg); color: var(--blue-text); }
+.wb-teal { background: var(--green-bg); color: var(--green-text); }
+.wb-amber { background: var(--amber-bg); color: var(--amber-text); }
+
+/* Law items */
+.law-item { padding: 12px 0; border-bottom: 0.5px solid var(--border); }
+.law-item:last-child { border-bottom: none; }
+.law-clause { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; color: var(--text3); letter-spacing: .06em; margin-bottom: 4px; text-transform: uppercase; }
+.law-text { font-size: 14px; color: var(--text); margin-bottom: 5px; }
+.law-impact { font-family: 'Helvetica Neue', sans-serif; font-size: 12px; color: var(--text2); line-height: 1.5; }
+
+/* Module */
+.module {
+  background: var(--bg2);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-bottom: 10px;
+}
+
+.module-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.module-title { font-family: 'Helvetica Neue', sans-serif; font-size: 13px; font-weight: 500; color: var(--text); }
+
+/* Team rows */
+.team-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 0.5px solid var(--border); }
+.team-row:last-child { border-bottom: none; }
+.avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Helvetica Neue', sans-serif; font-size: 11px; font-weight: 500; flex-shrink: 0; }
+.avatar-blue { background: var(--blue-bg); color: var(--blue-text); }
+.avatar-green { background: var(--green-bg); color: var(--green-text); }
+.avatar-amber { background: var(--amber-bg); color: var(--amber-text); }
+.avatar-gray { background: var(--bg3); color: var(--text2); }
+
+/* Risk bars */
+.risk-bar { height: 6px; border-radius: 3px; background: var(--bg3); margin: 8px 0 4px; overflow: hidden; }
+.risk-fill { height: 100%; border-radius: 3px; }
+
+/* ===================== ROI CALCULATOR ===================== */
+.slider-section { margin-bottom: 24px; }
+.slider-section-title { font-family: 'Helvetica Neue', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--text3); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 0.5px solid var(--border); }
+.slider-row { display: flex; align-items: center; gap: 10px; margin-bottom: 11px; }
+.slider-label { font-family: 'Helvetica Neue', sans-serif; font-size: 12px; color: var(--text2); width: 190px; flex-shrink: 0; }
+.slider-val { font-family: 'Helvetica Neue', sans-serif; font-size: 12px; font-weight: 500; color: var(--text); width: 70px; text-align: right; flex-shrink: 0; }
+
+input[type=range] {
+  flex: 1;
+  -webkit-appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--bg3);
+  outline: none;
+  cursor: pointer;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--text);
+  cursor: pointer;
+  border: 2px solid var(--surface);
+  box-shadow: 0 0 0 1px var(--border2);
+}
+
+.bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.bar-label { font-family: 'Helvetica Neue', sans-serif; font-size: 12px; color: var(--text2); width: 150px; flex-shrink: 0; }
+.bar-track { flex: 1; height: 8px; background: var(--bg3); border-radius: 4px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; transition: width .3s; }
+.bar-val { font-family: 'Helvetica Neue', sans-serif; font-size: 11px; color: var(--text2); width: 70px; text-align: right; flex-shrink: 0; }
+
+/* Divider */
+.divider { margin: 32px 0; border: none; border-top: 0.5px solid var(--border); }
+
+/* Footer */
+.report-footer {
+  margin-top: 60px;
+  padding-top: 24px;
+  border-top: 0.5px solid var(--border);
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 11px;
+  color: var(--text3);
+  display: flex;
+  justify-content: space-between;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <header class="report-header">
+    <div class="report-meta">Zero Markets 内部评估文档 &nbsp;·&nbsp; 2025年</div>
+    <h1 class="report-title">AI 内容系统：购买 vs. 自建</h1>
+    <p class="report-subtitle">Automaigency 评估、条款分析、自建路线图与 ROI 测算</p>
+    <div class="report-verdict">结论：不购买，自建更合理</div>
+  </header>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <button class="active" onclick="show('what')">他们是谁</button>
+    <button onclick="show('terms')">条款风险</button>
+    <button onclick="show('compare')">Buy vs Build</button>
+    <button onclick="show('modules')">自建模块</button>
+    <button onclick="show('timeline')">时间周期</button>
+    <button onclick="show('team')">团队配置</button>
+    <button onclick="show('roi')">ROI 计算器</button>
+  </nav>
+
+  <!-- ============ SECTION 1: What they do ============ -->
+  <div id="sec-what" class="section active">
+    <h2>Automaigency — 产品与技术壁垒</h2>
+
+    <div class="grid2" style="margin-bottom:16px">
+      <div class="card">
+        <h3 style="margin-bottom:14px">公司基本信息</h3>
+        <div class="row"><div class="row-label">公司名</div><div class="row-val">Automaigency Pty Ltd</div></div>
+        <div class="row"><div class="row-label">注册地</div><div class="row-val">Surry Hills NSW, Australia</div></div>
+        <div class="row"><div class="row-label">产品名</div><div class="row-val">SEO Strategy Builder (Fletcher AI)</div></div>
+        <div class="row"><div class="row-label">当前状态</div><div class="row-val"><span class="badge badge-amber">Beta 测试版</span></div></div>
+        <div class="row"><div class="row-label">付费模式</div><div class="row-val">Credit 点数制，无订阅，不退款</div></div>
+        <div class="row"><div class="row-label">服务范围</div><div class="row-val">SEO strategies / reports / documentation</div></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:14px">核心功能</h3>
+        <ul style="padding-left:16px; font-size:14px; color:var(--text2); line-height:2">
+          <li>AI 生成 SEO 策略和报告</li>
+          <li>文档自动化 workflow</li>
+          <li>语音交互界面（Fletcher AI）</li>
+          <li>Campaign 管理框架</li>
+          <li>模板结构化输出</li>
+        </ul>
+        <p style="margin-top:14px; font-size:13px; font-style:italic; color:var(--text3)">本质：把 SEO 逻辑封装成 prompt + 模板 workflow，底层调用 GPT-4 API。</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <h3 style="margin-bottom:14px">技术壁垒分析</h3>
+      <div class="grid3">
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:12px; font-weight:500; color:var(--text); margin-bottom:4px">模型层</div>
+          <div class="risk-bar"><div class="risk-fill" style="width:20%;background:var(--blue)"></div></div>
+          <p style="font-size:12px; margin-bottom:0">调用 GPT-4 / Claude API，任何团队可复制，无护城河</p>
+        </div>
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:12px; font-weight:500; color:var(--text); margin-bottom:4px">Prompt 设计</div>
+          <div class="risk-bar"><div class="risk-fill" style="width:55%;background:var(--amber)"></div></div>
+          <p style="font-size:12px; margin-bottom:0">封装好的 prompt 逻辑是真实壁垒，需要时间迭代</p>
+        </div>
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:12px; font-weight:500; color:var(--text); margin-bottom:4px">行业知识库</div>
+          <div class="risk-bar"><div class="risk-fill" style="width:80%;background:var(--green)"></div></div>
+          <p style="font-size:12px; margin-bottom:0">Zero Markets 的 Forex/CFD 知识库才是真正护城河</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="verdict green">
+      <div class="verdict-title">技术壁垒不高，护城河在行业知识，而不在平台本身</div>
+      <div class="verdict-desc">Automaigency 的核心是 prompt + 模板 workflow，不存在专有模型或不可复制的技术。你们自建反而能加入 Forex 合规层、多语言知识库、CRM 数据接入——这些是 Automaigency 给不了的。</div>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 2: Terms Risk ============ -->
+  <div id="sec-terms" class="section">
+    <h2>条款关键风险点分析</h2>
+    <p>以下是 Automaigency Terms & Conditions（Last Updated: October 2025）中对 Zero Markets 影响最大的条款。Section 12 是最需要关注的部分。</p>
+
+    <div class="card" style="margin-bottom:16px">
+      <div class="law-item">
+        <div class="law-clause">Section 3 — 服务描述</div>
+        <div class="law-text">仅用于生成 SEO strategies、reports 和 documentation</div>
+        <div class="law-impact">⚠ 范围限定清晰。不能用于 landing page copy、合规检查、CRM 对接等你们实际需要的场景。</div>
+      </div>
+      <div class="law-item">
+        <div class="law-clause">Section 12.2 — 授权范围 <span class="badge badge-red" style="margin-left:6px">关键风险</span></div>
+        <div class="law-text">生成内容只能用于"该 Campaign 范围内"，non-exclusive, non-transferable</div>
+        <div class="law-impact">致命限制：无法把生成内容做成内部模板、workflow 框架或跨 campaign 复用。每次用完基本等于一次性。这与你们"内容沉淀进 portal"的需求直接冲突。</div>
+      </div>
+      <div class="law-item">
+        <div class="law-clause">Section 12.3 — 禁止行为 <span class="badge badge-red" style="margin-left:6px">关键风险</span></div>
+        <div class="law-text">不能集成进永久模板或内部框架；不能用于其他 campaign；不能以自己名义转售</div>
+        <div class="law-impact">直接排除了把它嵌入 Marketing Portal 的可能性——而这恰恰是你们要做的事。</div>
+      </div>
+      <div class="law-item">
+        <div class="law-clause">Section 12.6 — 衍生品限制</div>
+        <div class="law-text">不能开发复制其 platform 逻辑或内容的衍生工具或系统</div>
+        <div class="law-impact">⚠ 条款措辞模糊，自建类似系统存在潜在法律风险（执行可能性较低，但需留意）。</div>
+      </div>
+      <div class="law-item">
+        <div class="law-clause">Section 4 — Beta 免责</div>
+        <div class="law-text">实验性软件，功能可随时变更，不保证稳定性，数据可能丢失</div>
+        <div class="law-impact">⚠ 当前是 Beta 版，支付 credit 后没有服务稳定性保障，不适合作为团队核心工具。</div>
+      </div>
+      <div class="law-item">
+        <div class="law-clause">Section 6 — 退款政策</div>
+        <div class="law-text">所有销售最终生效，不退款，包括未使用的 credits</div>
+        <div class="law-impact">⚠ 无任何财务保障。</div>
+      </div>
+      <div class="law-item">
+        <div class="law-clause">Section 13 — 赔偿上限</div>
+        <div class="law-text">最高赔偿 USD $500 或已付金额（取较低值）</div>
+        <div class="law-impact">⚠ 出现问题实际上无法追责。</div>
+      </div>
+    </div>
+
+    <div class="verdict red">
+      <div class="verdict-title">不建议购买</div>
+      <div class="verdict-desc">Section 12 的条款设计就是为了防止你把它变成内部系统。你们恰恰需要的是把这套逻辑沉淀进 portal 和 workflow——这在他们的条款下完全不被允许。买了也用不出价值，还会产生法律上的边界模糊。</div>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 3: Compare ============ -->
+  <div id="sec-compare" class="section">
+    <h2>购买 vs. 自建 — 八维对比</h2>
+
+    <div class="grid2" style="margin-bottom:16px">
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px">
+          <h3>购买 Automaigency</h3>
+          <span class="badge badge-red">不推荐</span>
+        </div>
+        <div class="row"><div class="row-label">成本</div><div class="row-val">按 credit 付费，不退款</div></div>
+        <div class="row"><div class="row-label">上手速度</div><div class="row-val"><span class="badge badge-green">快，即买即用</span></div></div>
+        <div class="row"><div class="row-label">定制化</div><div class="row-val"><span class="badge badge-red">几乎没有</span></div></div>
+        <div class="row"><div class="row-label">合规层</div><div class="row-val"><span class="badge badge-red">无 Forex 支持</span></div></div>
+        <div class="row"><div class="row-label">多语言</div><div class="row-val"><span class="badge badge-amber">通用，非本地化</span></div></div>
+        <div class="row"><div class="row-label">数据接入</div><div class="row-val"><span class="badge badge-red">无 GA4/CRM</span></div></div>
+        <div class="row"><div class="row-label">内部集成</div><div class="row-val"><span class="badge badge-red">条款禁止嵌入</span></div></div>
+        <div class="row"><div class="row-label">资产沉淀</div><div class="row-val"><span class="badge badge-red">不属于你们</span></div></div>
+      </div>
+
+      <div class="card card-accent">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px">
+          <h3>自建内部系统</h3>
+          <span class="badge badge-green">推荐</span>
+        </div>
+        <div class="row"><div class="row-label">成本</div><div class="row-val">Dev 人力 + API 费用（可测算）</div></div>
+        <div class="row"><div class="row-label">上手速度</div><div class="row-val"><span class="badge badge-amber">6–10 周 MVP</span></div></div>
+        <div class="row"><div class="row-label">定制化</div><div class="row-val"><span class="badge badge-green">完全可控</span></div></div>
+        <div class="row"><div class="row-label">合规层</div><div class="row-val"><span class="badge badge-green">可内置 Forex 规则</span></div></div>
+        <div class="row"><div class="row-label">多语言</div><div class="row-val"><span class="badge badge-green">KR / BR / NZ 专属</span></div></div>
+        <div class="row"><div class="row-label">数据接入</div><div class="row-val"><span class="badge badge-green">GA4 / AppsFlyer / CRM</span></div></div>
+        <div class="row"><div class="row-label">内部集成</div><div class="row-val"><span class="badge badge-green">嵌入 Portal</span></div></div>
+        <div class="row"><div class="row-label">资产沉淀</div><div class="row-val"><span class="badge badge-green">完全属于 Zero Markets</span></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-bottom:12px">本质差异</h3>
+      <div style="display:grid; grid-template-columns:1fr auto 1fr; gap:16px; align-items:start">
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:11px; font-weight:500; color:var(--text3); margin-bottom:10px; text-transform:uppercase; letter-spacing:.06em">购买后你得到的</div>
+          <ul style="padding-left:16px; font-size:13px; color:var(--text2); line-height:2">
+            <li>一次性生成的内容输出</li>
+            <li>通用 SEO brief 模板</li>
+            <li>无法沉淀进内部系统</li>
+            <li>每次需重新输入上下文</li>
+            <li>付了钱但知识不留下</li>
+          </ul>
+        </div>
+        <div style="font-size:24px; color:var(--text3); padding-top:30px">vs</div>
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:11px; font-weight:500; color:var(--text3); margin-bottom:10px; text-transform:uppercase; letter-spacing:.06em">自建后你拥有的</div>
+          <ul style="padding-left:16px; font-size:13px; color:var(--text2); line-height:2">
+            <li>持续沉淀的内部知识库</li>
+            <li>Forex/CFD 专属合规层</li>
+            <li>和 Portal 无缝集成的 workflow</li>
+            <li>GA4 / CRM 数据反馈闭环</li>
+            <li>真正属于 Zero Markets 的资产</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 4: Modules ============ -->
+  <div id="sec-modules" class="section">
+    <h2>MVP 四大模块 — Phase 1 优先实现</h2>
+
+    <div class="module">
+      <div class="module-header">
+        <div class="module-title">Module 1 · SEO Brief Generator</div>
+        <span class="badge badge-blue">P0 优先</span>
+      </div>
+      <div class="grid2">
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:11px; color:var(--text3); margin-bottom:8px">输入字段</div>
+          <ul style="padding-left:16px; font-size:13px; color:var(--text2); line-height:1.9">
+            <li>Market / Region</li><li>Language</li><li>Product type</li>
+            <li>Target keyword</li><li>Audience</li><li>Page type</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:11px; color:var(--text3); margin-bottom:8px">输出内容</div>
+          <ul style="padding-left:16px; font-size:13px; color:var(--text2); line-height:1.9">
+            <li>Search intent 分析</li><li>H1 / H2 / H3 建议</li><li>Content angle</li>
+            <li>Compliance notes</li><li>Meta title + description</li><li>CTA + internal links</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="module">
+      <div class="module-header">
+        <div class="module-title">Module 2 · Meta Localisation Generator</div>
+        <span class="badge badge-blue">P0 优先</span>
+      </div>
+      <div class="grid2">
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:11px; color:var(--text3); margin-bottom:8px">输入字段</div>
+          <ul style="padding-left:16px; font-size:13px; color:var(--text2); line-height:1.9">
+            <li>英文原版 Title + Description</li><li>目标语言 / 地区</li><li>SEO 关键词</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:11px; color:var(--text3); margin-bottom:8px">输出内容</div>
+          <ul style="padding-left:16px; font-size:13px; color:var(--text2); line-height:1.9">
+            <li>本地化 Meta Title</li><li>本地化 Meta Description</li>
+            <li>字符数检查（Google 限制）</li><li>Tone 调整建议</li>
+          </ul>
+        </div>
+      </div>
+      <p style="font-size:12px; color:var(--text3); margin:10px 0 0; font-style:italic">你们现在就在大量做这件事，最适合先自动化。</p>
+    </div>
+
+    <div class="module">
+      <div class="module-header">
+        <div class="module-title">Module 3 · Compliance Language Checker</div>
+        <span class="badge badge-amber">P1</span>
+      </div>
+      <div style="font-family:'Helvetica Neue',sans-serif; font-size:11px; color:var(--text3); margin-bottom:10px">自动标记高风险内容</div>
+      <div style="display:flex; flex-wrap:wrap; gap:6px">
+        <span class="badge badge-red">guaranteed profit</span>
+        <span class="badge badge-red">safe investment</span>
+        <span class="badge badge-red">low-risk trading</span>
+        <span class="badge badge-red">best returns</span>
+        <span class="badge badge-red">easy money</span>
+        <span class="badge badge-amber">收益承诺类表达</span>
+        <span class="badge badge-amber">缺失风险提示</span>
+        <span class="badge badge-amber">地区限制问题</span>
+      </div>
+    </div>
+
+    <div class="module">
+      <div class="module-header">
+        <div class="module-title">Module 4 · Content Performance Feedback</div>
+        <span class="badge badge-gray">P2 后期</span>
+      </div>
+      <div class="grid2">
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:11px; color:var(--text3); margin-bottom:8px">接入数据源</div>
+          <ul style="padding-left:16px; font-size:13px; color:var(--text2); line-height:1.9">
+            <li>GA4 pageviews / sessions</li><li>Search Console CTR</li>
+            <li>CRM signups / FTD</li><li>AppsFlyer campaign data</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:11px; color:var(--text3); margin-bottom:8px">输出评分</div>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:4px">
+            <span class="badge badge-green">Keep</span>
+            <span class="badge badge-amber">Update</span>
+            <span class="badge badge-red">Rewrite</span>
+            <span class="badge badge-gray">Merge</span>
+            <span class="badge badge-red">Remove</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3 style="margin-bottom:10px">必须整理进知识库的内容</h3>
+      <div class="grid2">
+        <ul style="padding-left:16px; font-size:13px; color:var(--text2); line-height:2">
+          <li>Brand tone of voice</li>
+          <li>各地区合规禁用词</li>
+          <li>Product descriptions 标准</li>
+          <li>Risk disclaimer 模板</li>
+        </ul>
+        <ul style="padding-left:16px; font-size:13px; color:var(--text2); line-height:2">
+          <li>各语言 SEO 关键词库</li>
+          <li>高转化历史内容</li>
+          <li>Competitor content examples</li>
+          <li>Landing page 结构模板</li>
+        </ul>
+      </div>
+      <p style="font-size:12px; color:var(--text3); margin-top:10px; font-style:italic">这才是你们真正的护城河，Automaigency 给不了。</p>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 5: Timeline ============ -->
+  <div id="sec-timeline" class="section">
+    <h2>项目时间周期</h2>
+
+    <div class="grid2" style="margin-bottom:24px">
+      <div class="metric">
+        <div class="metric-label">Phase 1 MVP</div>
+        <div class="metric-value">6–10 周</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">完整三阶段</div>
+        <div class="metric-value">~30 周</div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-dot phase-dot-1"></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
+        <h3>Phase 1 — MVP 内部工具</h3>
+        <span class="badge badge-blue">Week 1–10</span>
+      </div>
+      <p style="margin-bottom:12px">目标：内部可用，跑通 SEO Brief + Meta Generator + Compliance Checker 核心流程</p>
+      <div class="week-row"><div class="week-label">Week 1–2</div><div class="week-bar wb-blue" style="width:80%">PRD 定义 · 模板设计 · 知识库整理</div></div>
+      <div class="week-row"><div class="week-label">Week 3–4</div><div class="week-bar wb-blue" style="width:75%">前端页面 · API 接入 · Prompt 调试</div></div>
+      <div class="week-row"><div class="week-label">Week 5–7</div><div class="week-bar wb-blue" style="width:90%">SEO Brief + Meta Generator 开发</div></div>
+      <div class="week-row"><div class="week-label">Week 8–9</div><div class="week-bar wb-blue" style="width:65%">Compliance Checker · 权限系统</div></div>
+      <div class="week-row"><div class="week-label">Week 10</div><div class="week-bar wb-blue" style="width:55%">内测 · 修复 · 团队培训</div></div>
+      <p style="font-size:12px; color:var(--text3); margin-top:10px; font-style:italic">前提：Dev 资源专注，Nikki 投入 30–40% 时间做 PRD 和模板定义。</p>
+    </div>
+
+    <div class="phase">
+      <div class="phase-dot phase-dot-2"></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
+        <h3>Phase 2 — 接入 Marketing Portal</h3>
+        <span class="badge badge-green">Week 11–22</span>
+      </div>
+      <p style="margin-bottom:12px">目标：内容生产 + 审批 + campaign tracking 串成一条线</p>
+      <div class="week-row"><div class="week-label">Week 11–14</div><div class="week-bar wb-teal" style="width:70%">Portal 集成设计 · API 对接</div></div>
+      <div class="week-row"><div class="week-label">Week 15–18</div><div class="week-bar wb-teal" style="width:85%">审批 workflow · Tracking link 生成</div></div>
+      <div class="week-row"><div class="week-label">Week 19–22</div><div class="week-bar wb-teal" style="width:60%">发布记录 · 版本管理 · 区域测试</div></div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-dot phase-dot-3"></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
+        <h3>Phase 3 — 数据反馈闭环</h3>
+        <span class="badge badge-amber">持续迭代</span>
+      </div>
+      <p style="margin-bottom:10px">目标：从"内容生产工具"升级为"内容增长系统"</p>
+      <ul style="padding-left:16px; font-size:13px; color:var(--text2); line-height:2">
+        <li>GA4 / Search Console 接入</li>
+        <li>内容表现自动评分（keep / update / rewrite）</li>
+        <li>区域内容机会识别</li>
+        <li>自动推荐更新内容</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 6: Team ============ -->
+  <div id="sec-team" class="section">
+    <h2>最小可行团队配置</h2>
+
+    <div class="card" style="margin-bottom:16px">
+      <div class="team-row">
+        <div class="avatar avatar-blue">PO</div>
+        <div style="flex:1">
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:13px; font-weight:500; color:var(--text)">Product Owner / BA</div>
+          <div style="font-size:12px; color:var(--text2); margin-top:2px">定义流程、PRD、用户需求、字段逻辑</div>
+        </div>
+        <span class="badge badge-blue">Nikki — 最适合</span>
+      </div>
+      <div class="team-row">
+        <div class="avatar avatar-green">CL</div>
+        <div style="flex:1">
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:13px; font-weight:500; color:var(--text)">Content Lead</div>
+          <div style="font-size:12px; color:var(--text2); margin-top:2px">定义模板、tone of voice、内容标准、审核规则</div>
+        </div>
+        <span class="badge badge-green">内部</span>
+      </div>
+      <div class="team-row">
+        <div class="avatar avatar-green">SE</div>
+        <div style="flex:1">
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:13px; font-weight:500; color:var(--text)">SEO Specialist</div>
+          <div style="font-size:12px; color:var(--text2); margin-top:2px">定义关键词库、SEO brief 逻辑、区域 SEO 策略</div>
+        </div>
+        <span class="badge badge-green">内部</span>
+      </div>
+      <div class="team-row">
+        <div class="avatar avatar-amber">CO</div>
+        <div style="flex:1">
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:13px; font-weight:500; color:var(--text)">Compliance Reviewer</div>
+          <div style="font-size:12px; color:var(--text2); margin-top:2px">定义风险词库、合规审核规则、各地区限制清单</div>
+        </div>
+        <span class="badge badge-amber">合规部门</span>
+      </div>
+      <div class="team-row">
+        <div class="avatar avatar-blue">DEV</div>
+        <div style="flex:1">
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:13px; font-weight:500; color:var(--text)">Developer（1–2 人）</div>
+          <div style="font-size:12px; color:var(--text2); margin-top:2px">前端页面 + 后端 API + 权限管理 + 数据接入</div>
+        </div>
+        <span class="badge badge-blue">Dev Team</span>
+      </div>
+      <div class="team-row">
+        <div class="avatar avatar-gray">DA</div>
+        <div style="flex:1">
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:13px; font-weight:500; color:var(--text)">Data Analyst（Phase 2+）</div>
+          <div style="font-size:12px; color:var(--text2); margin-top:2px">GA4 / GSC / CRM 数据接入，内容表现评分</div>
+        </div>
+        <span class="badge badge-gray">后期加入</span>
+      </div>
+      <div class="team-row" style="border-bottom:none">
+        <div class="avatar avatar-amber">RR</div>
+        <div style="flex:1">
+          <div style="font-family:'Helvetica Neue',sans-serif; font-size:13px; font-weight:500; color:var(--text)">Regional Reviewer（多人）</div>
+          <div style="font-size:12px; color:var(--text2); margin-top:2px">检查 KR / BR / NZ 本地化质量，验证 tone 和合规</div>
+        </div>
+        <span class="badge badge-amber">KR · BR · NZ</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-bottom:10px">为什么 Nikki 适合做 Product Owner</h3>
+      <p>同时具备：内容团队视角、portal + dashboard 搭建经验、tracking 和 CRM 流程理解、跨部门协调能力、SQL 和数据分析能力。这个项目的 PO 没有比你更合适的人选。</p>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 7: ROI Calculator ============ -->
+  <div id="sec-roi" class="section">
+    <h2>ROI 测算 — 交互计算器</h2>
+    <p style="margin-bottom:24px">用你们自己的数字调整下方参数，ROI 结果实时更新。所有金额单位为 AUD。</p>
+
+    <div class="card" style="margin-bottom:16px">
+      <div class="slider-section">
+        <div class="slider-section-title">建设成本</div>
+        <div class="grid2">
+          <div>
+            <div class="slider-row"><div class="slider-label">Dev 人力（月数）</div><input type="range" id="devMonths" min="1" max="6" value="3" step="1" oninput="calc()"><div class="slider-val" id="devMonths-v">3 个月</div></div>
+            <div class="slider-row"><div class="slider-label">Dev 月薪（AUD）</div><input type="range" id="devSalary" min="5000" max="20000" value="10000" step="500" oninput="calc()"><div class="slider-val" id="devSalary-v">$10,000</div></div>
+            <div class="slider-row"><div class="slider-label">Dev 参与比例</div><input type="range" id="devPct" min="20" max="100" value="50" step="10" oninput="calc()"><div class="slider-val" id="devPct-v">50%</div></div>
+          </div>
+          <div>
+            <div class="slider-row"><div class="slider-label">PM/BA 人力（月数）</div><input type="range" id="pmMonths" min="1" max="6" value="3" step="1" oninput="calc()"><div class="slider-val" id="pmMonths-v">3 个月</div></div>
+            <div class="slider-row"><div class="slider-label">PM 月薪（AUD）</div><input type="range" id="pmSalary" min="5000" max="15000" value="8000" step="500" oninput="calc()"><div class="slider-val" id="pmSalary-v">$8,000</div></div>
+            <div class="slider-row"><div class="slider-label">PM 参与比例</div><input type="range" id="pmPct" min="10" max="60" value="35" step="5" oninput="calc()"><div class="slider-val" id="pmPct-v">35%</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slider-section">
+        <div class="slider-section-title">持续运营成本（月）</div>
+        <div class="grid2">
+          <div>
+            <div class="slider-row"><div class="slider-label">AI API 月费（AUD）</div><input type="range" id="apiCost" min="50" max="2000" value="300" step="50" oninput="calc()"><div class="slider-val" id="apiCost-v">$300</div></div>
+            <div class="slider-row"><div class="slider-label">基建 / 托管月费</div><input type="range" id="infraCost" min="0" max="1000" value="200" step="50" oninput="calc()"><div class="slider-val" id="infraCost-v">$200</div></div>
+          </div>
+          <div>
+            <div class="slider-row"><div class="slider-label">维护 Dev 月费</div><input type="range" id="maintCost" min="500" max="5000" value="1500" step="500" oninput="calc()"><div class="slider-val" id="maintCost-v">$1,500</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slider-section">
+        <div class="slider-section-title">效率收益参数</div>
+        <div class="grid2">
+          <div>
+            <div class="slider-row"><div class="slider-label">内容团队人数</div><input type="range" id="teamSize" min="2" max="20" value="8" step="1" oninput="calc()"><div class="slider-val" id="teamSize-v">8 人</div></div>
+            <div class="slider-row"><div class="slider-label">平均时薪（AUD）</div><input type="range" id="hourlyRate" min="30" max="120" value="60" step="5" oninput="calc()"><div class="slider-val" id="hourlyRate-v">$60</div></div>
+            <div class="slider-row"><div class="slider-label">SEO Brief 每月数量</div><input type="range" id="briefCount" min="5" max="100" value="30" step="5" oninput="calc()"><div class="slider-val" id="briefCount-v">30 份</div></div>
+            <div class="slider-row"><div class="slider-label">Brief 手动时长（小时）</div><input type="range" id="briefHours" min="0.5" max="4" value="2" step="0.5" oninput="calc()"><div class="slider-val" id="briefHours-v">2 h</div></div>
+            <div class="slider-row"><div class="slider-label">Brief AI 后节省比例</div><input type="range" id="briefSave" min="30" max="80" value="60" step="5" oninput="calc()"><div class="slider-val" id="briefSave-v">60%</div></div>
+          </div>
+          <div>
+            <div class="slider-row"><div class="slider-label">Meta 本地化每月数量</div><input type="range" id="metaCount" min="10" max="300" value="80" step="10" oninput="calc()"><div class="slider-val" id="metaCount-v">80 条</div></div>
+            <div class="slider-row"><div class="slider-label">Meta 手动时长（分钟）</div><input type="range" id="metaMins" min="10" max="60" value="25" step="5" oninput="calc()"><div class="slider-val" id="metaMins-v">25 min</div></div>
+            <div class="slider-row"><div class="slider-label">Meta AI 后节省比例</div><input type="range" id="metaSave" min="40" max="85" value="70" step="5" oninput="calc()"><div class="slider-val" id="metaSave-v">70%</div></div>
+            <div class="slider-row"><div class="slider-label">合规检查每月数量</div><input type="range" id="compCount" min="10" max="200" value="60" step="10" oninput="calc()"><div class="slider-val" id="compCount-v">60 次</div></div>
+            <div class="slider-row"><div class="slider-label">合规检查 AI 节省比例</div><input type="range" id="compSave" min="30" max="75" value="50" step="5" oninput="calc()"><div class="slider-val" id="compSave-v">50%</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid4" style="margin-bottom:16px">
+      <div class="metric"><div class="metric-label">建设总成本</div><div class="metric-value" id="r-buildCost">—</div></div>
+      <div class="metric"><div class="metric-label">运营年成本</div><div class="metric-value" id="r-opsCost">—</div></div>
+      <div class="metric"><div class="metric-label">年效率节省</div><div class="metric-value green" id="r-saving">—</div></div>
+      <div class="metric"><div class="metric-label">回本周期</div><div class="metric-value amber" id="r-payback">—</div></div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <div style="font-family:'Helvetica Neue',sans-serif; font-size:11px; color:var(--text3); margin-bottom:14px; text-transform:uppercase; letter-spacing:.06em">年节省构成</div>
+      <div class="bar-row"><div class="bar-label">SEO Brief 节省</div><div class="bar-track"><div class="bar-fill" id="bar-brief" style="background:var(--blue)"></div></div><div class="bar-val" id="bar-brief-v">—</div></div>
+      <div class="bar-row"><div class="bar-label">Meta 本地化节省</div><div class="bar-track"><div class="bar-fill" id="bar-meta" style="background:var(--green)"></div></div><div class="bar-val" id="bar-meta-v">—</div></div>
+      <div class="bar-row"><div class="bar-label">合规检查节省</div><div class="bar-track"><div class="bar-fill" id="bar-comp" style="background:var(--amber)"></div></div><div class="bar-val" id="bar-comp-v">—</div></div>
+      <p style="font-size:11px; color:var(--text3); margin-top:14px; font-style:italic">仅计算人力时薪节省，不含错误率降低、合规风险规避的隐性收益</p>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <div style="font-family:'Helvetica Neue',sans-serif; font-size:11px; color:var(--text3); margin-bottom:14px; text-transform:uppercase; letter-spacing:.06em">3年累计现金流</div>
+      <div style="position:relative; width:100%; height:200px">
+        <canvas id="roiChart" role="img" aria-label="3年累计现金流图表，显示建设成本、运营成本与节省的对比">3年ROI现金流分析</canvas>
+      </div>
+    </div>
+
+    <div id="verdict-box" class="verdict green">
+      <div class="verdict-title" id="verdict-title">—</div>
+      <div class="verdict-desc" id="verdict-desc">—</div>
+    </div>
+
+    <hr class="divider">
+
+    <h2 style="margin-top:0">隐性收益（难以量化但真实存在）</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3 style="margin-bottom:8px">合规风险规避</h3>
+        <p>一次因合规问题被监管机构处罚，罚款金额通常远超整个系统建设成本。Compliance Checker 降低的是高尾部风险，不是小概率事件。</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:8px">知识库沉淀</h3>
+        <p>团队的 SEO 经验、地区内容规则、高转化模板会沉淀进系统。人员流动不再带走知识，新人上手周期缩短。</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:8px">扩张成本递减</h3>
+        <p>进入新市场时，系统已有框架。新增语言/地区的边际成本远低于第一次建设，线性扩张变成近似零成本复制。</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:8px">数据反馈闭环</h3>
+        <p>Phase 3 接入 GA4/CRM 后，系统能告诉你哪类内容带来 FTD，内容团队的工作直接可见。这是外部 SaaS 工具给不了的。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="report-footer">
+    <span>Zero Markets 内部文档 — 保密</span>
+    <span>2025年 · 仅供内部使用</span>
+  </footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+function show(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+let roiChartInst = null;
+
+function fmt(n){ return '$' + Math.round(n).toLocaleString(); }
+function fmtM(n){ return '$' + Math.round(n/1000).toLocaleString() + 'k'; }
+
+function calc() {
+  const g = id => parseFloat(document.getElementById(id).value);
+  const sv = (id, txt) => document.getElementById(id + '-v').textContent = txt;
+
+  const devMonths = g('devMonths'); sv('devMonths', devMonths + ' 个月');
+  const devSalary = g('devSalary'); sv('devSalary', '$' + devSalary.toLocaleString());
+  const devPct = g('devPct'); sv('devPct', devPct + '%');
+  const pmMonths = g('pmMonths'); sv('pmMonths', pmMonths + ' 个月');
+  const pmSalary = g('pmSalary'); sv('pmSalary', '$' + pmSalary.toLocaleString());
+  const pmPct = g('pmPct'); sv('pmPct', pmPct + '%');
+  const apiCost = g('apiCost'); sv('apiCost', '$' + apiCost.toLocaleString());
+  const infraCost = g('infraCost'); sv('infraCost', '$' + infraCost.toLocaleString());
+  const maintCost = g('maintCost'); sv('maintCost', '$' + maintCost.toLocaleString());
+  const teamSize = g('teamSize'); sv('teamSize', teamSize + ' 人');
+  const hourlyRate = g('hourlyRate'); sv('hourlyRate', '$' + hourlyRate);
+  const briefCount = g('briefCount'); sv('briefCount', briefCount + ' 份');
+  const briefHours = g('briefHours'); sv('briefHours', briefHours + ' h');
+  const briefSave = g('briefSave'); sv('briefSave', briefSave + '%');
+  const metaCount = g('metaCount'); sv('metaCount', metaCount + ' 条');
+  const metaMins = g('metaMins'); sv('metaMins', metaMins + ' min');
+  const metaSave = g('metaSave'); sv('metaSave', metaSave + '%');
+  const compCount = g('compCount'); sv('compCount', compCount + ' 次');
+  const compSave = g('compSave'); sv('compSave', compSave + '%');
+
+  const buildCost = (devSalary * devMonths * devPct / 100) + (pmSalary * pmMonths * pmPct / 100);
+  const opsMonthly = apiCost + infraCost + maintCost;
+  const opsAnnual = opsMonthly * 12;
+
+  const briefSavingMonth = briefCount * briefHours * (briefSave / 100) * hourlyRate;
+  const metaSavingMonth = metaCount * (metaMins / 60) * (metaSave / 100) * hourlyRate;
+  const compSavingMonth = compCount * 0.5 * (compSave / 100) * hourlyRate;
+  const totalSavingAnnual = (briefSavingMonth + metaSavingMonth + compSavingMonth) * 12;
+  const maxSaving = Math.max(briefSavingMonth, metaSavingMonth, compSavingMonth) * 12;
+
+  const netAnnual = totalSavingAnnual - opsAnnual;
+  const paybackMonths = netAnnual > 0 ? Math.ceil(buildCost / (netAnnual / 12)) : 999;
+
+  document.getElementById('r-buildCost').textContent = fmt(buildCost);
+  document.getElementById('r-opsCost').textContent = fmt(opsAnnual) + '/yr';
+  document.getElementById('r-saving').textContent = fmt(totalSavingAnnual) + '/yr';
+  document.getElementById('r-payback').textContent = paybackMonths < 999 ? paybackMonths + ' 个月' : 'N/A';
+
+  const pct = v => Math.min(100, Math.round(v * 12 / (maxSaving || 1) * 100));
+  document.getElementById('bar-brief').style.width = pct(briefSavingMonth) + '%';
+  document.getElementById('bar-brief-v').textContent = fmtM(briefSavingMonth * 12) + '/yr';
+  document.getElementById('bar-meta').style.width = pct(metaSavingMonth) + '%';
+  document.getElementById('bar-meta-v').textContent = fmtM(metaSavingMonth * 12) + '/yr';
+  document.getElementById('bar-comp').style.width = pct(compSavingMonth) + '%';
+  document.getElementById('bar-comp-v').textContent = fmtM(compSavingMonth * 12) + '/yr';
+
+  const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+  const yr = [1, 2, 3].map(y => ({
+    save: Math.round(totalSavingAnnual * y),
+    cost: Math.round(buildCost + opsAnnual * y),
+  }));
+
+  if (roiChartInst) { roiChartInst.destroy(); }
+  roiChartInst = new Chart(document.getElementById('roiChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Year 1', 'Year 2', 'Year 3'],
+      datasets: [
+        { label: '累计节省', data: yr.map(y => y.save), backgroundColor: isDark ? '#085041' : '#E1F5EE', borderColor: '#1D9E75', borderWidth: 1.5 },
+        { label: '累计成本', data: yr.map(y => y.cost), backgroundColor: isDark ? '#0C447C' : '#E6F1FB', borderColor: '#185FA5', borderWidth: 1.5 },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': $' + ctx.raw.toLocaleString() } }
+      },
+      scales: {
+        y: { ticks: { callback: v => '$' + Math.round(v / 1000) + 'k', color: isDark ? '#888780' : '#5F5E5A' }, grid: { color: isDark ? 'rgba(255,255,255,.05)' : 'rgba(0,0,0,.04)' }, border: { display: false } },
+        x: { ticks: { color: isDark ? '#888780' : '#5F5E5A' }, grid: { display: false }, border: { display: false } }
+      }
+    }
+  });
+
+  const vbox = document.getElementById('verdict-box');
+  const vtitle = document.getElementById('verdict-title');
+  const vdesc = document.getElementById('verdict-desc');
+  vbox.className = 'verdict';
+  if (paybackMonths <= 12) {
+    vbox.classList.add('green');
+    vtitle.textContent = '强力推荐自建 — 回本周期 ' + paybackMonths + ' 个月';
+    vdesc.textContent = '一年内回本，3年累计净收益 ' + fmt(yr[2].save - yr[2].cost) + '。这是向 Paddy 提案的最佳数据支撑。';
+  } else if (paybackMonths <= 24) {
+    vbox.classList.add('amber');
+    vtitle.textContent = '建议自建 — 回本周期 ' + paybackMonths + ' 个月';
+    vdesc.textContent = '2年内回本，3年累计净收益 ' + fmt(yr[2].save - yr[2].cost) + '。收益合理，适合立项。可调整 Dev 参与比例或提高使用量来缩短周期。';
+  } else if (paybackMonths < 999) {
+    vbox.classList.add('amber');
+    vtitle.textContent = '谨慎自建 — 回本周期 ' + paybackMonths + ' 个月';
+    vdesc.textContent = '回本周期偏长。建议缩减 Phase 1 范围，降低建设成本，或提高使用频率后再评估。';
+  } else {
+    vbox.classList.add('red');
+    vtitle.textContent = '当前参数下不划算';
+    vdesc.textContent = '运营成本超过节省。检查 API 费用是否过高，或提升使用量（Brief/Meta 数量）。';
+  }
+}
+
+calc();
+</script>
+</body>
+</html>
